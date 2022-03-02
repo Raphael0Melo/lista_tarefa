@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
+import * as style from './App.styles'
+import {Item} from './types/item'
+import {ListItem} from './components/listItem'
+import {AddArea} from './components/AddArea'
 
-function App() {
+const App = () => {
+  const [list, setList] = useState<Item[]>([
+    // {id: 1, name: "Comprar o pão na padaria", done: false},
+    // {id: 1, name: "Comprar um bolo na padaria", done: false}
+  ])
+
+  const handleAddTask = (taskName: string) => {
+    let newList = [...list]
+    newList.push({
+      id: list.length + 1,
+      name: taskName,
+      done: false
+    })
+    setList(newList)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <div>
+      <style.Container>
+        <style.Area>
+          <style.Header>Lista de Tarefas</style.Header>
 
-export default App;
+          <AddArea onEnter={handleAddTask}/>
+
+          {list.map((item, i) => (
+            <ListItem key={i} item={item}/>
+          ))}
+        </style.Area>
+      </style.Container>
+    </div>
+  )
+}
+export default App
